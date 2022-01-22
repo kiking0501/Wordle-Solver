@@ -1,9 +1,5 @@
 import numpy as np
 from utility import _bucket_count, _get_output_path
-from Wordle import Wordle
-from BaseWordlePlayer import BaseWordlePlayer
-from HeuristicWordlePlayer import HeuristicWordlePlayer
-from MaxInformationGainWordlePlayer import MaxInformationGainWordlePlayer
 
 
 def get_words(size="small"):
@@ -32,7 +28,7 @@ def get_words(size="small"):
         return words
 
 
-def interactive_play(wordle, player, with_target):
+def interactive_play(wordle, player, with_target, first_guess=None):
     target = None
 
     if with_target:
@@ -46,12 +42,10 @@ def interactive_play(wordle, player, with_target):
                 print("#### Generating Target... ####")
                 target = wordle.generate_target()
 
-    player.play(target, verbose=True)
+    player.play(target=target, first_guess=first_guess, verbose=True)
 
 
-def check_top_guesses_performance(
-        wordle, player, topK, output_dir="output", output_name="top_guesses_performance"):
-
+def get_first_guess_performance(wordle, player, first_guess):
     from tqdm import tqdm
 
     def _get_stats(all_guesses):
@@ -67,23 +61,29 @@ def check_top_guesses_performance(
             msg += " [{}] {}".format(i, guess_dict.get(i, 0))
         return msg
 
+    all_guesses = []
+    for target in tqdm(wordle.words):
+        num_guess = player.play(target=target, first_guess=first_guess, verbose=False)
+        all_guesses.append(num_guess)
+
+    msg = "Guess: {} (Score: {:.2f}), {}".format(
+        first_guess, player.compute_score(first_guess), _get_stats(all_guesses))
+    print(msg)
+
+    return msg
+
+
+def check_topK_guesses_performance(
+        wordle, player, topK, output_dir="output", output_name="top_guesses_performance"):
+
     top_guesses = player.print_initial_top_guesses()
 
     print("\n## Start Running...")
-    topK = 10
     prints = []
     for top_id in range(topK):
-        first_guess, first_score = top_guesses[top_id]
-        all_guesses = []
-
-        for target in tqdm(wordle.words):
-            num_guess = player.play(target=target, first_guess=first_guess, verbose=False)
-            all_guesses.append(num_guess)
-
-        msg = "({}) Guess: {} (Score: {:.2f}), {}".format(
-            top_id, first_guess, first_score, _get_stats(all_guesses))
-        print(msg)
-        prints.append(msg)
+        first_guess, _ = top_guesses[top_id]
+        msg = get_first_guess_performance(wordle, player, first_guess)
+        prints.append("({}) ".format(top_id) + msg)
 
     obj_name = getattr(player, "precompute", "") + type(player).__name__
     output_path = _get_output_path(output_dir, output_name, obj_name) + ".txt"
@@ -93,8 +93,12 @@ def check_top_guesses_performance(
 
 
 if __name__ == "__main__":
+    from Wordle import Wordle
+    from BaseWordlePlayer import BaseWordlePlayer
+    from HeuristicWordlePlayer import HeuristicWordlePlayer
+    from MaxInformationGainWordlePlayer import MaxInformationGainWordlePlayer
 
-    INTERACTIVE = True
+    INTERACTIVE = False
     WITH_TARGET = True
     TOPK = 10
 
@@ -107,4 +111,4 @@ if __name__ == "__main__":
         interactive_play(wordle, player, with_target=WITH_TARGET)
 
     else:
-        check_top_guesses_performance(wordle, player, topK=TOPK)
+        check_topK_guesses_performance(wordle, player, topK=TOPK)

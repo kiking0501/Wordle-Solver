@@ -26,6 +26,12 @@ class BaseWordlePlayer():
             raise ValueError(
                 "<guess_list> does not contain {}-letter words!".format(self.wordle.k))
 
+    def reset(self):
+        """
+            Reset any used variables to their initial states
+        """
+        pass
+
     def compute_score(self, word):
         """
             Return:
@@ -33,7 +39,7 @@ class BaseWordlePlayer():
         """
         return -1
 
-    def give_guess(self, guess_words, candidates=None, fixed_guess=None, verbose=True):
+    def give_guess(self, guess_words, candidates, history, fixed_guess=None, verbose=True):
         """
            A simple way to provide a guess word:
                 either through the user input or the word is generated randomly
@@ -41,8 +47,10 @@ class BaseWordlePlayer():
             Parameters:
                 guess_words: (list of str)
                     the default list of words for guessing
-                (optional) candidates:
+                candidates:
                     the candidate words that satisfy the target conditions
+                history:
+                    previous guess words
                 (optional) fixed_guess:
                     if supplied, use this as the output guess
 
@@ -58,12 +66,12 @@ class BaseWordlePlayer():
             while (1):
                 guess = input(
                     "## Input Your Own Guess? (<{}-letter word>/empty):\n".format(self.wordle.k))
-                if guess in self.wordle.words:
+                if guess in self.wordle.words and guess not in history:
                     return guess, self.compute_score(guess)
                 elif not guess:
                     break
                 print("(invalid guess: not in the Wordle list)")
-        guess = random.choice(guess_words)
+        guess = random.choice(set(guess_words) - history)
         return guess, self.compute_score(guess)
 
     def get_response(self, guess, target):
@@ -123,11 +131,13 @@ class BaseWordlePlayer():
                 O(m+n) + num_guess * O(give_guess + get_response + adjust_candidates)
 
         """
+        self.reset()
         if verbose:
             print("\nTARGET: ", "UNKNOWN" if target is None else target)
 
-        guess_words = set(self.guess_list)
-        candidates = self.wordle.words.copy()
+        guess_words = [x for x in self.guess_list]
+        candidates = [x for x in self.wordle.words]
+        attempts = set()
 
         num_guess = 0
         while (len(candidates) >= 1):
@@ -137,11 +147,12 @@ class BaseWordlePlayer():
             guess, score = self.give_guess(
                 guess_words=candidates if self.should_pick_from(candidates) else guess_words,
                 candidates=candidates,
+                history=attempts,
                 fixed_guess=first_guess if num_guess == 1 else None,
                 verbose=verbose)
             if verbose:
-                print("# Guesses: {}, # Availalbe Candidates: {}, Picked Guess: {} (Score: {:.2f})".format(
-                    num_guess, len(candidates), guess, score))
+                print("# Guesses: {}, Picked Guess: {} (Score: {:.2f}), # Available Candidates: {}".format(
+                    num_guess, guess, score, len(candidates)))
 
             # Step 2: Get a response
             if target is None:
@@ -150,6 +161,7 @@ class BaseWordlePlayer():
                     response = input(
                         "Type the response...\n{}\n".format(self.wordle.get_response_description())
                     )
+                    print("")
             else:
                 response = self.get_response(guess, target)
                 if verbose:
@@ -160,7 +172,7 @@ class BaseWordlePlayer():
                 if verbose and target:
                     input("(... click Enter to proceed ...)\n")
                 candidates = self.adjust_candidates(guess, response, candidates)
-                guess_words.remove(guess)
+                attempts.add(guess)
             else:
                 break
 
@@ -178,6 +190,7 @@ class BaseWordlePlayer():
             Return:
                 a list of (word, score) ordered by a decreasing score
         """
+        self.reset()
         top_guesses = sorted(
             [(word, self.compute_score(word)) for word in self.guess_list],
             key=lambda x: (-x[1], x[0]))

@@ -16,6 +16,11 @@ class HeuristicWordlePlayer(BaseWordlePlayer):
 
     def __init__(self, wordle, guess_list=None):
         super().__init__(wordle, guess_list)
+
+    def reset(self):
+        """
+            Reset Character Frequencies
+        """
         self.char_freq = self.update_char_freq(self.wordle.words)
 
     @staticmethod
@@ -56,7 +61,7 @@ class HeuristicWordlePlayer(BaseWordlePlayer):
         """
         return sum([self.char_freq[c] for c in set(word)])
 
-    def give_guess(self, guess_words, candidates=None, fixed_guess=None, verbose=False):
+    def give_guess(self, guess_words, candidates, history, fixed_guess=None, verbose=False):
         """
             Provide a guess word that has the maximum score
             (unless specified by the fixed guess)
@@ -68,9 +73,10 @@ class HeuristicWordlePlayer(BaseWordlePlayer):
 
         guess, max_score = None, 0.0
         for ind, word in enumerate(guess_words):
-            score = self.compute_score(word)
-            if score >= max_score:
-                guess, max_score = word, score
+            if word not in history:
+                score = self.compute_score(word)
+                if score >= max_score:
+                    guess, max_score = word, score
         return guess, max_score
 
     def adjust_candidates(self, guess, response, candidates):
@@ -80,7 +86,8 @@ class HeuristicWordlePlayer(BaseWordlePlayer):
             Runtime: O(nk), depends on a shrinking n
         """
         new_candidates = super().adjust_candidates(guess, response, candidates)
-        self.char_freq = self.update_char_freq(new_candidates)
+        if len(new_candidates) >= 1:
+            self.char_freq = self.update_char_freq(new_candidates)
 
         return new_candidates
 

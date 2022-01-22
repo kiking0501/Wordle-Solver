@@ -23,8 +23,13 @@ class MaxInformationGainWordlePlayer(BaseWordlePlayer):
         super().__init__(wordle, guess_list)
         self.WORD_IDX = self.precompute_word_idx()
         self.RESPONSES = self.precompute_response_to_guess(suffix=precompute)
-        self.distribution = self.precompute_init_distribution(suffix=precompute)
         self.precompute = precompute
+
+    def reset(self):
+        """
+            Reset Response Distributions
+        """
+        self.distribution = self.precompute_init_distribution(suffix=self.precompute)
 
     def precompute_word_idx(self):
         """
@@ -127,7 +132,7 @@ class MaxInformationGainWordlePlayer(BaseWordlePlayer):
             score += -px * np.log(px)
         return score
 
-    def give_guess(self, guess_words, candidates=None, fixed_guess=None, verbose=False):
+    def give_guess(self, guess_words, candidates, history, fixed_guess=None, verbose=False):
         """
             Provide a guess word that has the maximum score
             (unless specified by the fixed guess)
@@ -139,9 +144,10 @@ class MaxInformationGainWordlePlayer(BaseWordlePlayer):
 
         guess, max_score = None, 0.0
         for ind, word in enumerate(guess_words):
-            score = self.compute_score(word)
-            if score >= max_score:
-                guess, max_score = word, score
+            if word not in history:
+                score = self.compute_score(word)
+                if score >= max_score:
+                    guess, max_score = word, score
         return guess, max_score
 
     def get_response(self, guess, candidate):

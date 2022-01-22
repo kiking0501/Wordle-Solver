@@ -1,1 +1,3 @@
-Wordle Solvers in Python
+# Wordle Solvers in Python
+
+See "demo" for their example usages.
