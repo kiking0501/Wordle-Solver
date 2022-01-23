@@ -179,4 +179,4 @@ class MaxInformationGainWordlePlayer(BaseWordlePlayer):
         return len(words) == 1
 
     def print_initial_top_guesses(self, output_dir="output", output_name="top_scores"):
-        super().print_initial_top_guesses(output_dir, output_name + "_" + self.precompute)
+        return super().print_initial_top_guesses(output_dir, output_name + "_" + self.precompute)

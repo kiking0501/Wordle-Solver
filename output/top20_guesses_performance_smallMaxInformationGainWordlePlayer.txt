@@ -1,0 +1,20 @@
+(0) Guess: raise (Score: 4.07), Mean: 3.670, Min: 1, Max: 6, Count of Guesses: [1] 1 [2] 34 [3] 843 [4] 1290 [5] 144 [6] 3
+(1) Guess: slate (Score: 4.06), Mean: 3.639, Min: 1, Max: 6, Count of Guesses: [1] 1 [2] 38 [3] 876 [4] 1282 [5] 116 [6] 2
+(2) Guess: crate (Score: 4.04), Mean: 3.631, Min: 1, Max: 6, Count of Guesses: [1] 1 [2] 39 [3] 888 [4] 1277 [5] 106 [6] 4
+(3) Guess: irate (Score: 4.04), Mean: 3.693, Min: 1, Max: 6, Count of Guesses: [1] 1 [2] 25 [3] 789 [4] 1372 [5] 124 [6] 4
+(4) Guess: trace (Score: 4.04), Mean: 3.625, Min: 1, Max: 6, Count of Guesses: [1] 1 [2] 39 [3] 899 [4] 1268 [5] 104 [6] 4
+(5) Guess: arise (Score: 4.03), Mean: 3.674, Min: 1, Max: 6, Count of Guesses: [1] 1 [2] 34 [3] 833 [4] 1303 [5] 138 [6] 6
+(6) Guess: stare (Score: 4.03), Mean: 3.641, Min: 1, Max: 6, Count of Guesses: [1] 1 [2] 36 [3] 883 [4] 1274 [5] 115 [6] 6
+(7) Guess: snare (Score: 4.00), Mean: 3.652, Min: 1, Max: 6, Count of Guesses: [1] 1 [2] 38 [3] 840 [4] 1327 [5] 104 [6] 5
+(8) Guess: arose (Score: 4.00), Mean: 3.679, Min: 1, Max: 6, Count of Guesses: [1] 1 [2] 29 [3] 835 [4] 1301 [5] 145 [6] 4
+(9) Guess: least (Score: 3.99), Mean: 3.650, Min: 1, Max: 6, Count of Guesses: [1] 1 [2] 35 [3] 864 [4] 1292 [5] 119 [6] 4
+(10) Guess: alert (Score: 3.98), Mean: 3.682, Min: 1, Max: 6, Count of Guesses: [1] 1 [2] 30 [3] 819 [4] 1324 [5] 137 [6] 4
+(11) Guess: crane (Score: 3.98), Mean: 3.634, Min: 1, Max: 6, Count of Guesses: [1] 1 [2] 37 [3] 891 [4] 1270 [5] 112 [6] 4
+(12) Guess: stale (Score: 3.98), Mean: 3.658, Min: 1, Max: 6, Count of Guesses: [1] 1 [2] 41 [3] 824 [4] 1333 [5] 114 [6] 2
+(13) Guess: saner (Score: 3.97), Mean: 3.668, Min: 1, Max: 6, Count of Guesses: [1] 1 [2] 39 [3] 787 [4] 1391 [5] 95 [6] 2
+(14) Guess: alter (Score: 3.96), Mean: 3.679, Min: 1, Max: 6, Count of Guesses: [1] 1 [2] 36 [3] 806 [4] 1337 [5] 133 [6] 2
+(15) Guess: later (Score: 3.96), Mean: 3.686, Min: 1, Max: 6, Count of Guesses: [1] 1 [2] 45 [3] 774 [4] 1357 [5] 136 [6] 2
+(16) Guess: react (Score: 3.95), Mean: 3.654, Min: 1, Max: 5, Count of Guesses: [1] 1 [2] 45 [3] 817 [4] 1343 [5] 109
+(17) Guess: leant (Score: 3.94), Mean: 3.662, Min: 1, Max: 6, Count of Guesses: [1] 1 [2] 40 [3] 847 [4] 1281 [5] 144 [6] 2
+(18) Guess: trade (Score: 3.94), Mean: 3.650, Min: 1, Max: 6, Count of Guesses: [1] 1 [2] 45 [3] 833 [4] 1324 [5] 108 [6] 4
+(19) Guess: learn (Score: 3.92), Mean: 3.689, Min: 1, Max: 6, Count of Guesses: [1] 1 [2] 40 [3] 806 [4] 1306 [5] 156 [6] 6

@@ -1,0 +1,20 @@
+(0) Guess: alert (Score: 4117.00), Mean: 3.860, Min: 1, Max: 7, Count of Guesses: [1] 1 [2] 25 [3] 662 [4] 1269 [5] 329 [6] 26 [7] 3
+(1) Guess: alter (Score: 4117.00), Mean: 3.855, Min: 1, Max: 6, Count of Guesses: [1] 1 [2] 25 [3] 649 [4] 1296 [5] 322 [6] 22
+(2) Guess: later (Score: 4117.00), Mean: 3.859, Min: 1, Max: 6, Count of Guesses: [1] 1 [2] 34 [3] 643 [4] 1277 [5] 333 [6] 27
+(3) Guess: irate (Score: 4116.00), Mean: 3.869, Min: 1, Max: 6, Count of Guesses: [1] 1 [2] 15 [3] 667 [4] 1253 [5] 361 [6] 18
+(4) Guess: arose (Score: 4093.00), Mean: 3.874, Min: 1, Max: 7, Count of Guesses: [1] 1 [2] 23 [3] 686 [4] 1202 [5] 363 [6] 39 [7] 1
+(5) Guess: stare (Score: 4087.00), Mean: 3.822, Min: 1, Max: 7, Count of Guesses: [1] 1 [2] 23 [3] 724 [4] 1231 [5] 313 [6] 21 [7] 2
+(6) Guess: arise (Score: 4067.00), Mean: 3.855, Min: 1, Max: 6, Count of Guesses: [1] 1 [2] 26 [3] 680 [4] 1232 [5] 353 [6] 23
+(7) Guess: raise (Score: 4067.00), Mean: 3.824, Min: 1, Max: 6, Count of Guesses: [1] 1 [2] 28 [3] 687 [4] 1281 [5] 298 [6] 20
+(8) Guess: learn (Score: 4000.00), Mean: 3.835, Min: 1, Max: 6, Count of Guesses: [1] 1 [2] 30 [3] 700 [4] 1232 [5] 323 [6] 29
+(9) Guess: renal (Score: 4000.00), Mean: 3.888, Min: 1, Max: 7, Count of Guesses: [1] 1 [2] 28 [3] 612 [4] 1289 [5] 360 [6] 24 [7] 1
+(10) Guess: saner (Score: 3970.00), Mean: 3.826, Min: 1, Max: 7, Count of Guesses: [1] 1 [2] 33 [3] 694 [4] 1257 [5] 302 [6] 25 [7] 3
+(11) Guess: snare (Score: 3970.00), Mean: 3.796, Min: 1, Max: 6, Count of Guesses: [1] 1 [2] 33 [3] 722 [4] 1264 [5] 272 [6] 23
+(12) Guess: cater (Score: 3917.00), Mean: 3.844, Min: 1, Max: 6, Count of Guesses: [1] 1 [2] 27 [3] 667 [4] 1276 [5] 324 [6] 20
+(13) Guess: crate (Score: 3917.00), Mean: 3.800, Min: 1, Max: 6, Count of Guesses: [1] 1 [2] 30 [3] 753 [4] 1201 [5] 307 [6] 23
+(14) Guess: react (Score: 3917.00), Mean: 3.843, Min: 1, Max: 6, Count of Guesses: [1] 1 [2] 33 [3] 698 [4] 1197 [5] 369 [6] 17
+(15) Guess: trace (Score: 3917.00), Mean: 3.800, Min: 1, Max: 6, Count of Guesses: [1] 1 [2] 33 [3] 745 [4] 1207 [5] 307 [6] 22
+(16) Guess: clear (Score: 3898.00), Mean: 3.856, Min: 1, Max: 6, Count of Guesses: [1] 1 [2] 31 [3] 646 [4] 1285 [5] 327 [6] 25
+(17) Guess: least (Score: 3898.00), Mean: 3.813, Min: 1, Max: 6, Count of Guesses: [1] 1 [2] 27 [3] 741 [4] 1201 [5] 325 [6] 20
+(18) Guess: slate (Score: 3898.00), Mean: 3.812, Min: 1, Max: 7, Count of Guesses: [1] 1 [2] 29 [3] 751 [4] 1185 [5] 323 [6] 24 [7] 2
+(19) Guess: stale (Score: 3898.00), Mean: 3.821, Min: 1, Max: 7, Count of Guesses: [1] 1 [2] 36 [3] 716 [4] 1213 [5] 324 [6] 23 [7] 2

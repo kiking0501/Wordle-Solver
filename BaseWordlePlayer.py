@@ -107,6 +107,12 @@ class BaseWordlePlayer():
         """
         return True
 
+    @staticmethod
+    def lowercase(word):
+        if word is not None:
+            word = word.lower()
+        return word
+
     def play(self, target=None, first_guess=None, verbose=False):
         """
             Solve a Wordle game by:
@@ -124,8 +130,9 @@ class BaseWordlePlayer():
                 verbose: (boolean)
                     set to True to print the intermediate guess words step-by-step
 
-            Output:
-                the number of total guesses
+            Return:
+                the number of total guesses (int)
+                the list of (guess, response) at each step (list)
 
             Runtime:
                 O(m+n) + num_guess * O(give_guess + get_response + adjust_candidates)
@@ -135,9 +142,11 @@ class BaseWordlePlayer():
         if verbose:
             print("\nTARGET: ", "UNKNOWN" if target is None else target)
 
-        guess_words = [x for x in self.guess_list]
-        candidates = [x for x in self.wordle.words]
+        target, first_guess = self.lowercase(target), self.lowercase(first_guess)
+        guess_words = [x.lower() for x in self.guess_list]
+        candidates = [x.lower() for x in self.wordle.words]
         attempts = set()
+        trace = []
 
         num_guess = 0
         while (len(candidates) >= 1):
@@ -158,9 +167,7 @@ class BaseWordlePlayer():
             if target is None:
                 response = None
                 while not self.wordle.validate_response(response):
-                    response = input(
-                        "Type the response...\n{}\n".format(self.wordle.get_response_description())
-                    )
+                    response = input("Type the response...\n")
                     print("")
             else:
                 response = self.get_response(guess, target)
@@ -168,6 +175,7 @@ class BaseWordlePlayer():
                     print("# Responses: {}".format(response))
 
             # Step 3: Check correctness and adjust
+            trace.append((guess, response))
             if not self.wordle.is_correct_response(response):
                 if verbose and target:
                     input("(... click Enter to proceed ...)\n")
@@ -181,7 +189,7 @@ class BaseWordlePlayer():
             return
         if verbose:
             print("Congrats! Total Guesses: {}".format(num_guess))
-        return num_guess
+        return num_guess, trace
 
     def print_initial_top_guesses(self, output_dir="output", output_name="top_scores"):
         """

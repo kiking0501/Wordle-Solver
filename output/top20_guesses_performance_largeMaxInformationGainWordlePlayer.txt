@@ -1,0 +1,20 @@
+(0) Guess: soare (Score: 4.08), Mean: 3.637, Min: 2, Max: 6, Count of Guesses: [2] 22 [3] 900 [4] 1292 [5] 99 [6] 2
+(1) Guess: roate (Score: 4.08), Mean: 3.636, Min: 2, Max: 5, Count of Guesses: [2] 28 [3] 868 [4] 1337 [5] 82
+(2) Guess: raise (Score: 4.07), Mean: 3.638, Min: 1, Max: 6, Count of Guesses: [1] 1 [2] 30 [3] 876 [4] 1310 [5] 94 [6] 4
+(3) Guess: raile (Score: 4.07), Mean: 3.635, Min: 2, Max: 5, Count of Guesses: [2] 24 [3] 873 [4] 1341 [5] 77
+(4) Guess: reast (Score: 4.07), Mean: 3.600, Min: 2, Max: 5, Count of Guesses: [2] 35 [3] 952 [4] 1231 [5] 97
+(5) Guess: slate (Score: 4.06), Mean: 3.614, Min: 1, Max: 6, Count of Guesses: [1] 1 [2] 32 [3] 914 [4] 1284 [5] 80 [6] 4
+(6) Guess: crate (Score: 4.04), Mean: 3.616, Min: 1, Max: 5, Count of Guesses: [1] 1 [2] 34 [3] 911 [4] 1275 [5] 94
+(7) Guess: salet (Score: 4.04), Mean: 3.611, Min: 2, Max: 6, Count of Guesses: [2] 40 [3] 907 [4] 1285 [5] 79 [6] 4
+(8) Guess: irate (Score: 4.04), Mean: 3.656, Min: 1, Max: 6, Count of Guesses: [1] 1 [2] 16 [3] 859 [4] 1343 [5] 94 [6] 2
+(9) Guess: trace (Score: 4.04), Mean: 3.606, Min: 1, Max: 5, Count of Guesses: [1] 1 [2] 34 [3] 936 [4] 1250 [5] 94
+(10) Guess: arise (Score: 4.03), Mean: 3.653, Min: 1, Max: 6, Count of Guesses: [1] 1 [2] 29 [3] 859 [4] 1313 [5] 110 [6] 3
+(11) Guess: orate (Score: 4.03), Mean: 3.645, Min: 2, Max: 5, Count of Guesses: [2] 34 [3] 839 [4] 1356 [5] 86
+(12) Guess: stare (Score: 4.03), Mean: 3.625, Min: 1, Max: 6, Count of Guesses: [1] 1 [2] 25 [3] 919 [4] 1267 [5] 101 [6] 2
+(13) Guess: carte (Score: 4.02), Mean: 3.619, Min: 2, Max: 6, Count of Guesses: [2] 33 [3] 901 [4] 1297 [5] 82 [6] 2
+(14) Guess: raine (Score: 4.01), Mean: 3.626, Min: 2, Max: 5, Count of Guesses: [2] 30 [3] 902 [4] 1286 [5] 97
+(15) Guess: caret (Score: 4.00), Mean: 3.619, Min: 2, Max: 6, Count of Guesses: [2] 31 [3] 919 [4] 1269 [5] 94 [6] 2
+(16) Guess: ariel (Score: 4.00), Mean: 3.647, Min: 2, Max: 5, Count of Guesses: [2] 23 [3] 871 [4] 1321 [5] 100
+(17) Guess: taler (Score: 4.00), Mean: 3.654, Min: 2, Max: 6, Count of Guesses: [2] 25 [3] 842 [4] 1362 [5] 82 [6] 4
+(18) Guess: carle (Score: 4.00), Mean: 3.611, Min: 2, Max: 6, Count of Guesses: [2] 40 [3] 893 [4] 1314 [5] 64 [6] 4
+(19) Guess: slane (Score: 4.00), Mean: 3.625, Min: 2, Max: 6, Count of Guesses: [2] 31 [3] 902 [4] 1290 [5] 88 [6] 4
