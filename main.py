@@ -182,11 +182,12 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     ####################################################
-    wordle = Wordle(5, get_words("small"))
+    words_size = "small"
+    wordle = Wordle(5, get_words(words_size))
 
     if args.solver == "heuristic":
-        print("\n[Loading the Heuristic Player]\n")
-        player = HeuristicWordlePlayer(wordle, guess_list=get_words("small"))
+        print("\n[Loading the Heuristic Player ({} word list)]\n".format(words_size))
+        player = HeuristicWordlePlayer(wordle, guess_list=get_words(words_size))
 
     elif args.solver == "small-mig":
         print("\n[Loading the Max Information Gain Player]\n")
@@ -201,7 +202,7 @@ if __name__ == "__main__":
 
     elif args.mode == "analysis":
         if args.topK:
-            check_topK_guesses_performance(wordle, player, topK=args.topK)
+            check_topK_guesses_performance(wordle, player, topK=int(args.topK))
         elif args.save_trace:
             save_trace(wordle, player, first_guess_list=args.save_trace)
         elif args.first_guess:
