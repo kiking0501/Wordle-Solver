@@ -173,6 +173,7 @@ function tileChangeColor(btn) {
         "correct": "present",
         "present": "absent",
         "absent": "correct",
+        "congrats": "absent",
     }
     var tile = $(btn);
     var original = tile.attr("data-state");
@@ -283,7 +284,7 @@ function clearTiles(row) {
 }
 
 function editPrevious(){
-    var prev_i;
+    var prev_i = 0;
 
     for (let i = ROW_NUM-1; i >= 1; i--) {
         var row = $("#board game-row").eq(i);

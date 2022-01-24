@@ -1,11 +1,23 @@
 # Wordle Solvers in Python
 
 - To guess an unknown 5-letter English word in fewest attempts
+
 - Inspired by the Wordle game: https://www.powerlanguage.co.uk/wordle/
 
+- Play it online! https://kiking0501.github.io/Wordle-Solver
+
+  <p float="center">
+    <img src="img/home.png" height="350" />
+  </p>
+  <p>
+    <img src="img/solve.png" height="400" /> 
+  </p>
+
+ 
 
 
-# Quick Start
+
+# Quick Start (Command Line)
 
 ### Playing a 5-letter Wordle game
 
@@ -29,7 +41,40 @@ The program will simulate the guessing process with an automatically generated r
 
 
 
-### Options
+# Quick Start (iPython Notebook)
+
+See ``demo.ipynb``.
+
+
+
+
+
+# Wordle Solvers Basic Info
+
+### The Heuristic solver 
+
+``HeuristicWordlePlayer``
+
+- Picks the guess based on **character frequencies**
+- A word scores higher if it is composed of common characters rather than rare characters
+- The worse and average number of guesses is **6** and **~3.82**, with the first guess as **"raise"**
+- Computes on-the-fly. 
+
+### The Maximum Information Gain Solver 
+
+``MaxInformationGainWordlePlayer``
+
+- Picks the guess based on **maximizing information gain**
+- A word scores higher if it generates the maximum entropy among all potential targets
+- The worse and average number of guesses is **5** and **~3.65**, with the first guess as **"react"**
+- Computes slower and is optimized by pre-computation
+- Providing a larger word list as the guess list improves the average number of guesses to **~3.60** with the start word as **"reast", "trace"** etc
+
+
+
+
+
+# More Command Line Options
 
 ``$ python main.py --solver <solver> --first_guess <first-guess> <mode> <mode arguments>``
 
@@ -50,38 +95,3 @@ The ``<mode>`` is either ``interactive`` or ``analysis`` and the mode arguments 
   ![Analysis](img/analysis_topK.png)
 
   Statistics is saved in the ``/output`` folder.
-
-
-
-### iPython Notebook is available
-
-Check ``demo.ipynb`` for more usages.
-
-
-
-# Wordle Solvers Basic Info
-
-### The Heuristic solver 
-
-``HeuristicWordlePlayer``
-
-- Picks the guess based on **character frequencies**
-- A word scores higher if it is composed of common characters rather than rare characters
-- The worse and average number of guesses is **6** and **~3.82**, with the first guess as **"raise"**
-- Computes on-the-fly. 
-
-### The Maximum Information Gain Solver 
-
-``MaxInformationGainWordlePlayer``
-
-- Picks the guess based on **maximizing information gain**
-
-- A word scores higher if it generates the maximum entropy among all potential targets
-
-- The worse and average number of guesses is **5** and **~3.65**, with the first guess as **"react"**
-
-- Computes slower and is optimized by pre-computation
-
-- Providing a larger word list as the guess list improves the average number of guesses to **~3.60** with the start word as **"reast", "trace"** etc
-
-  
