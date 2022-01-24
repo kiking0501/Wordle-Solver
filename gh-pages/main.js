@@ -14,7 +14,15 @@ function goHome(){
 
 }
 
+function displayBoard(callback) {
+    $("#help").hide();
+    $("#board-container").show();
+
+}
+
 function drawInitialBoard(callback){
+    displayBoard();
+
     $("#board").html("");
     var gamerow = $("#game-row-clone").clone();
     gamerow.removeAttr("id");
@@ -30,7 +38,7 @@ function drawInitialBoard(callback){
         $("#board").append(gamerow.clone());
     }
 
-    var msg = ["guess", "your", "words", "in", "six", "moves"];
+    var msg = ["guess", "your", "words", "in", "six", "tries"];
     var style = ["correct", "present", "absent", "tbd", "tbd", "tbd"];
 
     for (let i = 0; i < ROW_NUM; i++) {
@@ -102,6 +110,8 @@ function startPlay(){
     $("#play-again").hide();
     $("#submit-response").show();
     $("#edit-previous").show();
+
+    displayBoard();
     // disableResponse();
 
     showWord(0, getRandomFirstGuessIdx());
@@ -129,6 +139,8 @@ function enableResponse(){
 }
 
 function showWord(i, word_idx, state){
+    displayBoard();
+
     var row = $("#board game-row").eq(i);
     row.attr("letters", WORDS[word_idx]);
     row.attr("guess_state", word_idx);
@@ -287,12 +299,25 @@ function editPrevious(){
     if (prev_i >= 0) unlockRow(prev_i);
     $("#submit-response").show();
     $("#play-again").hide();
+
+    displayBoard();
 }
 
 function failPlay(){
     $("#alert").dialog("open");
 }
 
-function closeAlert(){
-    $("#alert").dialog("close");
+function closeBox(name){
+    $("#" + name).dialog("close");
+}
+
+function switchBoard() {
+    $("#help").toggle();
+    $("#board-container").toggle();
+}
+
+function switchStory() {
+    $("#story").toggle();
+    $("#board-container").toggle();
+    // $("#action-container").toggle();
 }
