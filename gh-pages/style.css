@@ -388,6 +388,8 @@ a:-webkit-any-link{
 .instructions {
     font-size: 14px;
     color: var(--color-tone-1);
+    padding-left: 30px;
+    padding-right:30px;
 }
 
 p {
@@ -409,6 +411,8 @@ i{
     solid var(--color-tone-4);
     border-top: 1px
     solid var(--color-tone-4);
+    padding-left: 30px;
+    padding-right:30px;
 }
 
 

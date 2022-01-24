@@ -7,9 +7,11 @@ from tqdm import tqdm
 
 class MaxInformationGainWordlePlayer(BaseWordlePlayer):
     """
-        Playing Wordle
-            by picking the word that achieves the maximum information gain
-            with respect to the available candidates
+        Playing Wordle based on maximizing information gain
+
+        At each guess, pick the word that generates the maximum Shannon entropy
+            from its response distribution (the count of all possible response outcomes
+            with respect to the available target words).
 
         Runtime:
             Precompute: O(mnk)
@@ -43,10 +45,10 @@ class MaxInformationGainWordlePlayer(BaseWordlePlayer):
 
     def precompute_response_to_guess(self, output_dir="output", suffix="small", verbose=True):
         """
-            Precompute and cache possible responses for each guess to each target,
-                since they will be frequently accessed during score computation
+            Precompute and cache possible responses for each guess to each target
+                (since they will be frequently accessed during score computation)
             Return:
-                {idx(guess): idx(target): encode(response)} for each guess and each target
+                {idx(guess): idx(target): response} for each guess and each target
 
             Runtime: O(mnk) for first compute
         """
@@ -102,7 +104,12 @@ class MaxInformationGainWordlePlayer(BaseWordlePlayer):
 
     def get_distribution(self, words):
         """
-            Get the response distribution
+            For each word, computes all possible response outcomes
+                with respect to different target words
+                and store the frequency of each response (distribution)
+
+            Return:
+                {idx(word):{response: count}}
 
             Runtime: O(mnk) with a shrinking n
         """
@@ -119,8 +126,8 @@ class MaxInformationGainWordlePlayer(BaseWordlePlayer):
 
     def compute_score(self, word):
         """
-            The score of a word is its information gain
-                among the availalbe candidates
+            The score of a word
+                is the Shannon entropy of its response distribution
 
             Runtime: O(3^k)
         """
@@ -134,7 +141,7 @@ class MaxInformationGainWordlePlayer(BaseWordlePlayer):
 
     def give_guess(self, guess_words, candidates, history, fixed_guess=None, verbose=False):
         """
-            Provide a guess word that has the maximum score
+            Pick the guess word that has the maximum Shannon entropy
             (unless specified by the fixed guess)
 
             Runtime: O(m*3^k)
@@ -160,7 +167,7 @@ class MaxInformationGainWordlePlayer(BaseWordlePlayer):
 
     def adjust_candidates(self, guess, response, candidates):
         """
-            Update distribution with the latest available candidates
+            Update distributions with the latest available candidates
 
             Runtime: O(mnk) with a shrinking n
         """

@@ -3,13 +3,15 @@ var WORDS = {};
 var ROW_NUM = 6;
 
 function goHome(){
+    $("#start-play").hide();
+    $("#submit-response").hide();
+    $("#play-again").hide();
+    $("#edit-previous").hide();
+
     readWords();
     readGuesses();
     drawInitialBoard(function(){
         $("#start-play").show();
-        $("#submit-response").hide();
-        $("#play-again").hide();
-        $("#edit-previous").hide();
     });
 
 }
@@ -139,8 +141,6 @@ function enableResponse(){
 }
 
 function showWord(i, word_idx, state){
-    displayBoard();
-
     var row = $("#board game-row").eq(i);
     row.attr("letters", WORDS[word_idx]);
     row.attr("guess_state", word_idx);
@@ -234,6 +234,8 @@ function animateSuccessRow(i) {
 }
 
 function submitResponse(){
+    displayBoard();
+
     var d = Object.assign({}, GUESSES);
     var next_word_idx;
     var next_i;
@@ -284,6 +286,8 @@ function clearTiles(row) {
 }
 
 function editPrevious(){
+    displayBoard();
+
     var prev_i = 0;
 
     for (let i = ROW_NUM-1; i >= 1; i--) {
@@ -300,8 +304,6 @@ function editPrevious(){
     if (prev_i >= 0) unlockRow(prev_i);
     $("#submit-response").show();
     $("#play-again").hide();
-
-    displayBoard();
 }
 
 function failPlay(){
