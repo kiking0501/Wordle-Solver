@@ -90,3 +90,13 @@ class Wordle():
         return (response and
                 len(response) == self.k and
                 set(response).issubset(self.rformat))
+
+    def encode_response(self, response):
+        """
+            Encode each response as an interger
+        """
+        response_score = {r: idx for idx, r in enumerate(self.rformat)}
+        code = 0
+        for i, r in enumerate(response):
+            code += (response_score[r] * 3 ** i)
+        return code

@@ -31,23 +31,21 @@ The program will simulate the guessing process with an automatically generated r
 
 ### Options
 
-``$ python main.py <mode> --solver <solver> --first_guess <first-guess>``
+``$ python main.py --solver <solver> --first_guess <first-guess> <mode> <mode arguments>``
 
 The ``<solver>``  is either ``heuristic``, ``small-mig``, or ``large-mig``.  (*mig* stands for *Maximum Information Gain*). The default is ``heuristic``.
 
 The ``<first-guess>`` specifies a fixed word for the solver to use in the first guess. The default is ``raise``. 
 
-The ``<mode>`` is either ``interactive`` or ``analysis``:
+The ``<mode>`` is either ``interactive`` or ``analysis`` and the mode arguments are as follows:
 
-- ``interactive``: (example as above) guess an unknown target with the manual response from the user, or use ``--with_target`` to specify a simulation process.
+- ``interactive``: (examples as above) guess an unknown target with the manual response from the user, or add ``--with_target`` to specify a simulation process.
 
 - ``analysis``: for analyzing the worst and average number of guesses of the solver. 
 
-  Run ``$ python main.py analysis --first_guess <first-guess>``  
+  Run ``$ python main.py analysis`` and the solver will simulate the guessing process for all potential target words using with the fixed first guess word (see above to change the first guess word). 
 
-  and the solver will simulate the guessing process for all potential target words using the `first-guess` as the first word to guess. 
-
-  Run ``$ python main.py analysis --topK <topK>`` to run the above analysis for the top-K first-guess words (with the highest internal solver score). 
+  Run ``$ python main.py analysis --topK <topK>`` to run the above analysis for the automatically selected top-K first-guess words (that have the highest internal solver score). 
 
   ![Analysis](img/analysis_topK.png)
 

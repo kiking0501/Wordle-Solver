@@ -51,14 +51,20 @@ def interactive_play(wordle, player, with_target, first_guess=None):
     player.play(target=target, first_guess=first_guess, verbose=True)
 
 
-def get_first_guess_performance(wordle, player, first_guess):
-    from tqdm import tqdm
+def get_first_guess_performance(wordle, player, first_guess, verbose=True):
+    """
+        Use the input first guess word for all possible targets
+            and get statistics about the number of guesses
+    """
+    try:
+        from tqdm import tqdm
+    except ImportError:
+        print("Download tqdm to display progress bar in command line")
 
     def _get_stats(all_guesses):
         """
             Print message for the statistics of a list of guesses
         """
-
         guess_dict = _bucket_count(all_guesses)
         msg = "Mean: {:.3f}, Min: {}, Max: {}".format(
             np.mean(all_guesses), min(guess_dict), max(guess_dict))
@@ -67,18 +73,27 @@ def get_first_guess_performance(wordle, player, first_guess):
             msg += " [{}] {}".format(i, guess_dict.get(i, 0))
         return msg
 
+    if verbose:
+        print("#" * 50)
+        print("### Checking performance of '{}' as a first guess for all possible targets... ###".format(first_guess))
+        print("#" * 50)
+
     all_guesses = []
     for target in tqdm(wordle.words):
         num_guess, trace = player.play(target=target, first_guess=first_guess, verbose=False)
         all_guesses.append(num_guess)
     msg = _get_stats(all_guesses)
-
+    if verbose:
+        print(msg)
     return msg
 
 
 def check_topK_guesses_performance(
         wordle, player, topK, output_dir="output", output_name="top_guesses_performance"):
-
+    """
+        Iterate the top-K first guess word for all possible targets
+            and get statistics about the number of guesses for each first guess
+    """
     print("#" * 50)
     print("### Getting scores of all words at first guess ... ###")
     top_guesses = player.print_initial_top_guesses()
@@ -95,10 +110,39 @@ def check_topK_guesses_performance(
     for top_id in range(topK):
         first_guess, first_score = top_guesses[top_id]
         msg = "({}) Guess: {} (Score: {:.2f}), {}".format(
-            top_id, first_guess, first_score, get_first_guess_performance(wordle, player, first_guess))
+            top_id, first_guess, first_score, get_first_guess_performance(wordle, player, first_guess), verbose=False)
         print(msg)
         with open(output_path, "a") as f:
             f.write(msg + "\n")
+
+
+def save_trace(wordle, player, first_guess_list, output_dir="output", output_name="traces"):
+    """
+        Saving the traces for each possible target and for each first guess in the input list
+            each line stores "idx(guess),encode(response)" at each step, tab-separated
+            the end of trace is indicated by "idx(target)"
+    """
+    try:
+        from tqdm import tqdm
+    except ImportError:
+        print("Download tqdm to display progress bar in command line")
+
+    obj_name = getattr(player, "precompute", "") + type(player).__name__
+    output_path = _get_output_path(output_dir, output_name, obj_name) + ".txt"
+    if not os.path.exists(output_path):
+        open(output_path, "w").close()
+        print("{} created.".format(output_path))
+
+    word_idx = {word: idx for idx, word in enumerate(player.guess_list)}
+    for first_guess in first_guess_list:
+        print("first guess: ", first_guess)
+        for target in tqdm(wordle.words):
+            num_guess, trace = player.play(target=target, first_guess=first_guess, verbose=False)
+            msg = "\t".join([
+                "{},{}".format(word_idx[guess], wordle.encode_response(response))
+                for guess, response in trace[:-1]] + [str(word_idx[target])])
+            with open(output_path, "a") as f:
+                f.write(msg + "\n")
 
 
 if __name__ == "__main__":
@@ -116,7 +160,7 @@ if __name__ == "__main__":
         help="Specify the solver to use (heuristic/small-mig/large-mig)")
     parser.add_argument(
         "--first_guess", default="raise",
-        help="Specify a fixed word for the solver to use in first guess, default 'raise'")
+        help="Specify a fixed word for the solver to use in the first guess, default 'raise'")
 
     subparsers = parser.add_subparsers(help="usages: interactive/analysis", dest='mode')
 
@@ -130,8 +174,11 @@ if __name__ == "__main__":
     parser_a = subparsers.add_parser("analysis", help="Analyse First Guess Performance")
 
     parser_a.add_argument(
-        "--topK", default=3,
-        help="Check the performance of the top-K words with the highest internal solver score, default 3")
+        "--topK", default=None,
+        help="Check the performance of the top-K words with the highest internal solver score")
+    parser_a.add_argument(
+        "--save_trace", nargs="+", default=None)
+
     args = parser.parse_args()
 
     ####################################################
@@ -153,8 +200,9 @@ if __name__ == "__main__":
         interactive_play(wordle, player, with_target=args.with_target, first_guess=args.first_guess)
 
     elif args.mode == "analysis":
-        if args.first_guess:
-            get_first_guess_performance(wordle, player, first_guess=args.first_guess)
-
-        else:
+        if args.topK:
             check_topK_guesses_performance(wordle, player, topK=args.topK)
+        elif args.save_trace:
+            save_trace(wordle, player, first_guess_list=args.save_trace)
+        elif args.first_guess:
+            get_first_guess_performance(wordle, player, first_guess=args.first_guess)
