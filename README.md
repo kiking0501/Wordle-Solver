@@ -56,7 +56,7 @@ See [``demo.ipynb``](/demo.ipynb).
 
 ### The Heuristic solver
 
-[``HeuristicWordlePlayer``](/blob/master/HeuristicWordlePlayer.py)
+[``HeuristicWordlePlayer``](HeuristicWordlePlayer.py)
 
 - Picks the guess based on **character frequencies**
 - A word scores higher if it is composed of common characters rather than rare characters
@@ -65,7 +65,7 @@ See [``demo.ipynb``](/demo.ipynb).
 
 ### The Maximum Information Gain Solver
 
-[``MaxInformationGainWordlePlayer``](/blob/master/MaxInformationGainWordlePlayer.py)
+[``MaxInformationGainWordlePlayer``](MaxInformationGainWordlePlayer.py)
 
 - Picks the guess based on **maximizing information gain**
 - A word scores higher if it generates the maximum Shannon entropy from its response distribution (the count of all possible response outcomes with respect to the available target words).
