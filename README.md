@@ -7,7 +7,7 @@
 - Play it online! https://kiking0501.github.io/Wordle-Solver
 
   <p float="center">
-      <img src="img/home2.png" width="400" />
+      <img src="img/home.png" width="400" />
   </p>
 
   <p>
