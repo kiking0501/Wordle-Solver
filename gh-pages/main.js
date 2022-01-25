@@ -11,6 +11,7 @@ function goHome(){
     readWords();
     readGuesses();
     drawInitialBoard(function(){
+        $("#action-container").show();
         $("#start-play").show();
     });
 
@@ -246,6 +247,7 @@ function animateSuccessRow(i) {
 
 function submitResponse(){
     displayBoard();
+    displayRemaining();
 
     var d = Object.assign({}, GUESSES);
     var next_word_idx;
@@ -268,6 +270,7 @@ function submitResponse(){
                 if (next_states.length == 1) final_guess = true;
             } else if (getResponseCode(i) == "242") {
                 next_i = i;
+                next_word_idx = parseInt(guess_state);
                 final_guess = true;
             } else {
                 failPlay();
@@ -278,7 +281,6 @@ function submitResponse(){
                 $("#submit-response").hide();
                 $("#play-again").show();
             }
-            else if (new_state in d) showWord(next_i, next_word_idx);
             break;
         }
     }
