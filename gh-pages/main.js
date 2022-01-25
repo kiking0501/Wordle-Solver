@@ -7,6 +7,8 @@ function goHome(){
     $("#submit-response").hide();
     $("#play-again").hide();
     $("#edit-previous").hide();
+    $("#help").hide();
+    $("#story").hide();
 
     readWords();
     readGuesses();
