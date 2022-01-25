@@ -81,13 +81,13 @@ header {
 header .title {
     font-weight: 700;
     font-size: 36px;
-    letter-spacing: 0.2rem;
+    letter-spacing: 0.1rem;
     text-transform: uppercase;
     text-align: center;
     position: absolute;
     left: 0;
     right: 0;
-    top: 0;
+    /*top: 0;*/
     /*display: flex;*/
 /*    pointer-events: none;*/
     /*cursor: pointer;*/
@@ -371,11 +371,12 @@ a:-webkit-any-link{
 }
 
 #help{
-    width: var(--game-max-width);
     /*height: 500px;*/
     background-color: white;
     align-items: center;
     padding-top: 10px;
+    display: flex;
+    flex-direction: column;
 }
 
 #help-icon{
@@ -383,6 +384,11 @@ a:-webkit-any-link{
     padding: 10px;
 
     align-items: center;
+}
+
+.story-link:hover{
+    text-decoration: underline;
+    cursor: pointer;
 }
 
 .instructions {
@@ -399,6 +405,7 @@ p {
     margin-inline-start: 0px;
     margin-inline-end: 0px;
     font-family: 'Clear Sans', 'Helvetica Neue', Arial, sans-serif;
+    min-width: 70%;
 }
 
 i{
@@ -419,4 +426,23 @@ i{
 .examples .tile {
     height: 35px;
     width: 35px;
+}
+
+#story{
+    /*height: 500px;*/
+    background-color: white;
+    align-items: center;
+    padding-top: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.story-session {
+    font-size: 14px;
+    border-bottom: 1px
+    solid var(--color-tone-4);
+    border-top: 1px
+    solid var(--color-tone-4);
+    padding-left: 30px;
+    padding-right:30px;
 }

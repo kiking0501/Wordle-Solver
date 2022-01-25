@@ -18,6 +18,8 @@ function goHome(){
 
 function displayBoard(callback) {
     $("#help").hide();
+    $("#help-icon").css("color", "");
+    $(".story-link").css("color", "inherit");
     $("#board-container").show();
 
 }
@@ -70,24 +72,10 @@ function drawInitialBoard(callback){
     }
 }
 
-function readTXT(file_path){
-    var lines;
-    $.ajax({
-        url: file_path,
-        type: 'get',
-        async: false,
-        success: function(data) {
-            lines = data.split("\n");
-        }
-     });
-    return lines;
-}
-
 function readWords(){
     $.get('data/small.txt', function(data) {
         WORDS = data.split("\n");
     })
-    // WORDS = readTXT('data/small.txt');
 }
 
 function readGuesses(){
@@ -141,24 +129,30 @@ function enableResponse(){
 }
 
 function showWord(i, word_idx, state){
-    var row = $("#board game-row").eq(i);
-    row.attr("letters", WORDS[word_idx]);
-    row.attr("guess_state", word_idx);
-    if (typeof(state) == "undefined") {
-        state = "absent";
+
+    function _showWord(callback) {
+        var row = $("#board game-row").eq(i);
+        row.attr("letters", WORDS[word_idx]);
+        row.attr("guess_state", word_idx);
+        if (typeof(state) == "undefined") {
+            state = "absent";
+        }
+        for (let j = 0; j < 5; j++) {
+            setTimeout(function() {
+                var tile = row.find(".tile").eq(j);
+                tile.attr("data-state", state);
+                tile.attr("data-animation", "pop");
+                tile.attr("data-animation", "flip-in");
+                tile.attr("data-animation", "flip-out");
+                tile.attr("letter", WORDS[word_idx][j]);
+                tile.text(WORDS[word_idx][j]);
+                setTileButton(tile);
+                if (j == 4) callback();
+            }, 50*(i*ROW_NUM+j));
+        }
     }
-    for (let j = 0; j < 5; j++) {
-        setTimeout(function() {
-            var tile = row.find(".tile").eq(j);
-            tile.attr("data-state", state);
-            tile.attr("data-animation", "pop");
-            tile.attr("data-animation", "flip-in");
-            tile.attr("data-animation", "flip-out");
-            tile.attr("letter", WORDS[word_idx][j]);
-            tile.text(WORDS[word_idx][j]);
-            setTileButton(tile);
-        }, 50*(i*ROW_NUM+j));
-    }
+
+    _showWord(displayRemaining);
 }
 
 function setTileButton(tile) {
@@ -166,6 +160,7 @@ function setTileButton(tile) {
     tile.attr("onclick", "tileChangeColor(this)");
     tile.removeClass("inactive");
 }
+
 
 function tileChangeColor(btn) {
     var change = {
@@ -178,14 +173,30 @@ function tileChangeColor(btn) {
     var tile = $(btn);
     var original = tile.attr("data-state");
     tile.attr("data-state", change[original]);
+    displayRemaining();
 
-    // var siblings = tile.siblings();
-    // var have_colors = true;
-    // for (var i = 0; i < siblings.length; i++)
-    //     have_colors &&= ($(siblings[i]).attr("data-state") != "tbd");
-    // if (have_colors) {
-    //     enableResponse();
-    // }
+}
+
+function displayRemaining() {
+    var d = Object.assign({}, GUESSES);
+
+    for (let i = 0; i < ROW_NUM; i++) {
+        var row = $("#board game-row").eq(i);
+        var guess_state = row.attr("guess_state");
+        if (has_response(guess_state)) d = d[guess_state];
+        else {
+            var new_state = guess_state + "," + getResponseCode(i);
+            if (new_state in d) {
+                var leftNum = Object.keys(d[new_state]).length;
+                $("#remain-num").text(leftNum.toString());
+            } else if (getResponseCode(i) == 242) {
+                $("#remain-num").text("1");
+            } else {
+                $("#remain-num").text("no match");
+            }
+            break;
+        }
+    }
 }
 
 function getResponseCode(i) {
@@ -289,7 +300,6 @@ function editPrevious(){
     displayBoard();
 
     var prev_i = 0;
-
     for (let i = ROW_NUM-1; i >= 1; i--) {
         var row = $("#board game-row").eq(i);
         var guess_state = row.attr("guess_state");
@@ -302,6 +312,8 @@ function editPrevious(){
         }
     }
     if (prev_i >= 0) unlockRow(prev_i);
+    displayRemaining();
+
     $("#submit-response").show();
     $("#play-again").hide();
 }
@@ -314,13 +326,45 @@ function closeBox(name){
     $("#" + name).dialog("close");
 }
 
+function isDisplay(ele){
+    return ele.css("display") != "none";
+}
+
 function switchBoard() {
-    $("#help").toggle();
-    $("#board-container").toggle();
+    if (isDisplay($("#help"))) {
+        $("#help").hide();
+        $("#help-icon").css("color", "");
+        $("#board-container").show();
+        $("#action-container").show();
+    } else {
+        $("#help").show();
+        $("#help-icon").css("color", "var(--yellow)");
+        $("#action-container").hide();
+        if (isDisplay($("#story"))) {
+            $("#story").hide();
+            $(".story-link").css("color", "inherit");
+        }
+        if (isDisplay($("#board-container"))) $("#board-container").hide();
+
+    }
+    // $("#help").toggle();
+    // $("#board-container").toggle();
 }
 
 function switchStory() {
-    $("#story").toggle();
-    $("#board-container").toggle();
-    // $("#action-container").toggle();
+    if (isDisplay($("#story"))) {
+        $("#story").hide();
+        $(".story-link").css("color", "inherit");
+        $("#board-container").show();
+        $("#action-container").show();
+    } else {
+        $("#story").show();
+        $(".story-link").css("color", "var(--yellow)");
+        $("#action-container").hide();
+        if (isDisplay($("#help"))) {
+            $("#help").hide();
+            $("#help-icon").css("color", "");
+        }
+        if (isDisplay($("#board-container"))) $("#board-container").hide();
+    }
 }

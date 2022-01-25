@@ -1,5 +1,6 @@
 import random
 from utility import _bucket_count
+import numpy as np
 
 
 class Wordle():
@@ -7,6 +8,8 @@ class Wordle():
         A Wordle object
             specifies a list of n words with k-letters (as the target pool)
             and the characters used in the response-to-guess output string
+
+            also precomputes a response-to-code mapping O(k*3^k)
 
     """
     def __init__(self, k, words, rformat=["0", "1", "2"]):
@@ -17,6 +20,7 @@ class Wordle():
         self.rformat = rformat
         if len(rformat) != 3 and any([len(x) > 1 for x in rformat]):
             raise ValueError("wrong response format: must be a list of three single characters")
+        self.response_to_idx, self.idx_to_response = self._precompute_response_code()
 
     def generate_target(self):
         """
@@ -91,12 +95,48 @@ class Wordle():
                 len(response) == self.k and
                 set(response).issubset(self.rformat))
 
-    def encode_response(self, response):
+    def _encode_response(self, response):
         """
-            Encode each response as an interger
+            Encode each response as an integer, O(k)
         """
         response_score = {r: idx for idx, r in enumerate(self.rformat)}
         code = 0
         for i, r in enumerate(response):
             code += (response_score[r] * 3 ** i)
         return code
+
+    def _decode_response(self, code):
+        """
+            Decode each response code back to the original response, O(k)
+        """
+        response = ""
+        for i in range(self.k-1, -1, -1):
+            response = str(int(np.floor(code / (3 ** i)))) + response
+            code %= (3**i)
+        assert self.validate_response(response)
+        return response
+
+    def _precompute_response_code(self):
+        """
+            Precompute the encode mapping for each response, O(k*3^k)
+        """
+        response_to_idx = {}
+        idx_to_response = []
+
+        for i in range(3**self.k):
+            response = self._decode_response(i)
+            idx_to_response.append(response)
+            response_to_idx[response] = i
+        return response_to_idx, idx_to_response
+
+    def encode_response(self, response):
+        """
+            Provide the response code
+        """
+        return self.response_to_idx[response]
+
+    def decode_response(self, code):
+        """
+            Provide the original response
+        """
+        return self.idx_to_response[code]

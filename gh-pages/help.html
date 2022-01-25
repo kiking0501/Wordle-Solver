@@ -1,8 +1,8 @@
-<span class="closebtn" onclick="switchBoard()">&times;</span>
 
-<div align="center" style="padding-bottom:10px">
-    <a href="https://www.powerlanguage.co.uk/wordle/" target="_blank"><strong>Wordle</strong> daily challenges</a>?
-</div>
+<!-- <div align="center" style="padding-bottom:10px;"> -->
+    <!-- <span class="closebtn" onclick="switchBoard()">&times;</span> -->
+    <!-- <a href="https://www.powerlanguage.co.uk/wordle/" target="_blank"><strong>Wordle</strong> daily challenges</a>?
+</div> -->
 
 <div class="instructions">
     <p>
@@ -10,7 +10,8 @@
     </p>
 
     <p>
-     Your word should be a valid 5-letter word within <a href="https://raw.githubusercontent.com/kiking0501/Wordle-Solver/master/data/small.txt" target="_blank"><strong>this list <i class="fa fa-external-link" aria-hidden="true" style="color:inherit"></i></strong></a>.
+     Your word should be a valid 5-letter word within <a href="https://raw.githubusercontent.com/kiking0501/Wordle-Solver/master/data/small-ordered.txt" target="_blank"><strong>this list (2315 words)</strong></a>.
+     <!-- <i class="fa fa-external-link" aria-hidden="true" style="color:inherit"></i> -->
     </p>
 
     <p>
@@ -48,6 +49,16 @@
     <div class="tile" data-state="absent">E</div>
     <p>
     The letter E is not in the word in any spot.
+    </p>
+
+    <div class="tile" data-state="tbd">H</div>
+    <div class="tile" data-state="tbd">A</div>
+    <div class="tile" data-state="present">P</div>
+    <div class="tile" data-state="absent">P</div>
+    <div class="tile" data-state="tbd">Y</div>
+    <p>
+    The letter P is in the word but it appears only once. <br>
+    It is also in the wrong spots.
     </p>
 </div>
 

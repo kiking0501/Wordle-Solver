@@ -39,6 +39,7 @@
                 readGuesses();
                 goHome();
                 $("#help").load("gh-pages/help.html");
+                $("#story").load("gh-pages/story.html");
                 $("#alert").dialog({
                     dialogClass: "no-close",
                     appendTo: "#action-container",
@@ -53,11 +54,14 @@
     <body>
         <div id="game">
             <header>
-                <div class="title"> <i id="help-icon" class="fa fa-question-circle-o " onclick="switchBoard()"></i>  <span style="cursor:pointer" onclick="goHome()">WORDLE SOLVER</span> </div>
+                <div class="title"> <i id="help-icon" class="fa fa-question-circle-o " onclick="switchBoard()" ></i>  <span style="cursor:pointer" onclick="goHome()">WORDLE SOLVER</span> </div>
 
             </header>
             <div>
-                <div class="subtitle"><a href='http://github.com/kiking0501/Wordle-Solver' target="_blank">by kiking</a> <a href='http://github.com/kiking0501/Wordle-Solver' target="_blank"><img src="img/GitHub-Mark-32px.png" alt="Kiking's Github" style="height:1em;"></a> <i id="help-icon" class="fa fa-coffee" style="cursor:not-allowed"></i>
+                <div class="subtitle">
+                    <a href='http://github.com/kiking0501/Wordle-Solver' target="_blank">by kiking</a> <a href='http://github.com/kiking0501/Wordle-Solver' target="_blank"><img src="img/GitHub-Mark-32px.png" alt="Kiking's Github" style="height:1em;"></a>
+                    |
+                    <span class="story-link" onclick="switchStory()">Story</span> <span class="story-link" onclick="switchStory()"><i class="fa fa-coffee" style="color:inherit"></i></span>
                </div>
             </div>
 
@@ -75,7 +79,7 @@
                         <div class="key" id="start-play" onclick="startPlay()" style="display:none;">START</div>
                     </div>
                      <div class="row">
-                        <div class="key" id="submit-response" onclick="submitResponse()" style="display:none;">Proceed ᐅ</div>
+                        <div class="key" id="submit-response" onclick="submitResponse()" style="display:none;">Proceed ᐅ (<span id="remain-num">2315</span>) </div>
                     </div>
                      <div class="row">
                         <div class="key" id="play-again" onclick="startPlay()" style="display:none;">Play Again &nbsp;<i class="fa fa-refresh" aria-hidden="true" style="color:black"></i></div>
@@ -89,7 +93,7 @@
 
                 <div id="alert" class="game-box">
                   <span class="closebtn" onclick="closeBox('alert')" style="color: white;">&times;</span>
-                  <strong>Ooops.</strong> Could not guess your word. <br> <br> Does your word exist in <a href="https://raw.githubusercontent.com/kiking0501/Wordle-Solver/master/data/small.txt" target="_blank"><strong>this word list <i class="fa fa-external-link" aria-hidden="true" style="color:inherit"></i></strong></a>?
+                  <strong>Ooops.</strong> Could not guess your word. <br> <br> Does your word exist in <a href="https://raw.githubusercontent.com/kiking0501/Wordle-Solver/master/data/small-ordered.txt" target="_blank"><strong>this word list (2315 words) <i class="fa fa-external-link" aria-hidden="true" style="color:inherit"></i></strong></a>?
                 </div>
             </div>
 
