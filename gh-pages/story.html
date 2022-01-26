@@ -1,24 +1,110 @@
 
-<div class="story-session" style="color:grey">
-    <p><strong> [The Heuristic Approach by Character Frequencies] </strong></p>
-    <p>
-    </p>
+<div class="story-session">
+    <p class="title" onclick="toggleSession('aboutDetails')"><i class="fa fa-coffee" style="color:inherit"></i><strong> About the Solver </strong></p>
+
+    <div class="details" id="aboutDetails" style="display:none">
+        <p> The solver currently demonstrates the heuristic strategy for the <a href="https://www.powerlanguage.co.uk/wordle/" target="_blank"><strong>Wordle daily challenges</strong></a>. Both strategies are implemented in Python with more updates <a href='http://github.com/kiking0501/Wordle-Solver' target="_blank"><strong>here</strong></a>.
+            <i class="fa fa-coffee close-coffee" onclick="toggleSession('aboutDetails')"> </i>
+        </p>
+
+    </div>
 </div>
 
-<div class="story-session" style="color:grey">
-    <p><strong> [Maximizing the Shannon Entropy] </strong></p>
-    <p>
-    </p>
-</div>
 <div class="story-session">
-    <p><strong> The Night </strong></p>
-    <p>
-        "Hey," I said, skimming through the updates of my social media. "Have you tried the <a href="https://www.powerlanguage.co.uk/wordle/" target="_blank"><strong>Wordle daily challenges</strong></a>?"
-    </p>
-    <p> "Nope, what's that?" He asked.
-    </p>
-    <p> Quickly after two guesses in the game, he started searching for five-letter dictionaries online. "Don't cheat," I giggled as he tried hard looking for match words. Finally, he commented, "this game should be solved by programming. It would be easy to write a solver."
-    </p>
-    <p> "Yeh, let's try that out. I bet my solver is going to beat yours. " <i class="fa fa-coffee" style="color:inherit"></i>
-    </p>
+    <p class="title" onclick="toggleSession('heuristicDetails')"><i class="fa fa-coffee" style="color:inherit"></i><strong> [Strategy A] Play Heuristically with Character Frequencies </strong></p>
+
+    <div class="details" id="heuristicDetails" style="display:none">
+        <p>
+            Intuitively, what words might work well for a first guess in the game?
+        </p>
+        <p>
+            <strong>Natural Thought</strong>: Figure out which vowels ('a', 'e', 'i', 'o', 'u') exist in the target since a word must contain at least one vowel.
+        </p>
+
+        <p>To extend this thought further, one might consider words composed of common characters, including the vowels, over rare characters. The response for common characters would help eliminate more candidates for the next guess.
+        </p>
+        <p> That leads to the first heuristic rule:
+        </p>
+        <p>
+            <strong>Heuristic Rule</strong>: Give favour to words composed of common characters rather than rare characters.
+        </p>
+        <p>
+            <strong>Implementation</strong>: Find character frequencies among the target candidates. A guess word then takes its score as the sum of character frequencies from its unique characters. The word with the highest score wins.
+        </p>
+        <p>
+            The same rule can be applied in subsequent guesses by only checking character frequencies among the remaining candidates.
+        </p>
+        ~~~
+        <p>
+            Sometimes one might want to guess words not listed in the remaining candidates. For example, consider words that end with "-ound". There are over eight of them (e.g. "bound", "pound", "mound", "sound", etc).
+        </p>
+        <p>
+            If the remaining candidates only consist of these "-ound" words, a better choice of guess would be "plumb", the response of which helps quickly identify the significant character from those "-ound" words.
+        </p>
+        <p> That leads to an adjusted heuristic rule:
+        </p>
+
+        <p>
+            <strong>Adjusted Heuristic Rule</strong>: Consider all possible guess words and favor words composed of significant characters only, excluding characters shared by all remaining candidates.
+        </p>
+
+        <p>
+            <strong>Adjusted Implementation</strong>: Compute the word score for all possible guess words instead of just the remaining candidates, and ignore scores from insignificant characters.
+        </p>
+
+        <p>
+            <strong>Result</strong>: With this simple heuristic rule, the solver can guess <a href="https://raw.githubusercontent.com/kiking0501/Wordle-Solver/master/data/small-ordered.txt" target="_blank"><strong>all 2315 words <i class="fa fa-external-link" aria-hidden="true" style="color:inherit"></i></strong></a> within <strong>six guesses</strong> using first guesses such as "raise", "later", or "snare". Works like a charm to tackle the Wordle daily challenges. <i class="fa fa-coffee close-coffee" onclick="toggleSession('heuristicDetails')"></i>
+        </p>
+
+    </div>
+</div>
+
+<div class="story-session">
+    <p class="title" onclick="toggleSession('entropyDetails')"><i class="fa fa-coffee" style="color:inherit"></i><strong> [Strategy B] Maximize the Information Entropy </strong></p>
+
+    <div class="details" id="entropyDetails" style="display:none">
+        <p>
+            The discussed heuristic rule looks for words composed of significant characters such that the responses could provide useful <em><strong>information</strong></em> for the next guess. This idea of "providing useful information for the next guess" could be further formulated as follows:
+        </p>
+        <p>
+            <strong>Formulation</strong>: Given a guess word, consider all possible responses $x_1, x_2, ... x_n$ given to this word with respect to different targets. The amount of information from these possible responses, in information theory, is measured by the <a href="https://en.wikipedia.org/wiki/Entropy_(information_theory)" target="_blank"><strong>Shannon Entropy</strong></a>:
+            $$ - \sum_{i=1}^{n} p(x_i) \log p(x_i) $$
+            where $p(x_i)$ is the probability of having $x_i$ as a response outcome.
+        </p>
+        <p>
+            <strong>What it means</strong>: This entropy is high when the response outcomes spread out evenly in distribution, that is, when the responses are diversified rather than clustered with respect to various targets.
+        </p>
+        <p>
+            Meanwhile, clustered responses are not desirable since little "information" is provided to distinguish different targets. As such, this entropy is a decent reflection of the amount of useful information provided by a guess word.
+        </p>
+        <p>
+            <strong>Implementation</strong>: At each guess time, compute the information entropy of all guess words with respect to the remaining candidates. The word with the maximum information entropy wins.
+        </p>
+
+        <p>
+            <strong>Result</strong>:  While the entropy computation takes time, the solver can guess <a href="https://raw.githubusercontent.com/kiking0501/Wordle-Solver/master/data/small-ordered.txt" target="_blank"><strong>all 2315 words <i class="fa fa-external-link" aria-hidden="true" style="color:inherit"></i></strong></a> within <strong>five guesses</strong> using first guesses such as "react". Solves the Wordle daily challenges with an ease of mind.
+            <i class="fa fa-coffee close-coffee" onclick="toggleSession('entropyDetails')"> </i>
+        </p>
+    </div>
+
+</div>
+
+
+<div class="story-session">
+    <p class="title" onclick="toggleSession('nightDetails')"><i class="fa fa-coffee" style="color:inherit"></i><strong> The Night </strong></p>
+    <div class="details" id="nightDetails" style="display:none">
+        <p>
+            "Hey," I said, skimming through the updates of my social media. "Have you tried the <a href="https://www.powerlanguage.co.uk/wordle/" target="_blank"><strong>Wordle daily challenges</strong></a>?"
+        </p>
+        <p> "Nope, what's that?" He asked.
+        </p>
+        <p> Quickly after two guesses in the game, he started searching for five-letter dictionaries online. "Don't cheat," I giggled when he tried hard looking for match words. Finally, he commented, "this game should be tackled by programming. I bet it would be fairly easy to write a solver."
+        </p>
+        <p> "Yeh, let's try that out. I bet my solver is going to beat yours. "
+        </p>
+        ~~
+
+        <p>Finally, my strategy got a six and his strategy got a five for the worst number of guesses. However, mine runs faster. That surely counts as a win, I will say. <i class="fa fa-coffee close-coffee" onclick="toggleSession('nightDetails')"></i>
+        </p>
+    </div>
 </div>

@@ -372,3 +372,16 @@ function switchStory() {
         if (isDisplay($("#board-container"))) $("#board-container").hide();
     }
 }
+
+function toggleSession(name) {
+    // $(".story-session .details:not(#" + name + ")").hide();
+    // $(".story-session .title").css("color", "");
+
+    $("#" + name).toggle();
+    var title = $($("#" + name).parent().find(".title")[0]);
+    if (isDisplay($("#" + name))) {
+        title.css("color", "var(--darkendYellow)");
+    } else {
+        title.css("color", "inherit");
+    }
+}
