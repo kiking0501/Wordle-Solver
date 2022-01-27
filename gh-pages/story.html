@@ -73,15 +73,15 @@
             As an example, take three "-ound" words, "bound", "pound", and "mound" as the target candidates. If we choose the guess word as "lound", all possible responses would be the same outcome:
             $$\text{Absent-Correct-Correct-Correct-Correct}$$
             On the other hand, choosing a guess word "plumb" would result in three different response outcomes:
-            $$\text{Wrong-Wrong-Correct-Wrong-Correct}$$
-            $$\text{Correct-Wrong-Correct-Wrong-Wrong}$$
-            $$\text{Wrong-Wrong-Wrong-Correct-Wrong}$$
+            $$\text{Absent-Absent-Correct-Absent-Present}$$
+            $$\text{Correct-Absent-Correct-Absent-Absent}$$
+            $$\text{Absent-Absent-Correct-Present-Absent}$$
             Clearly, the "plumb" is a good guess word since its diversified response outcomes help us better determine the actual target word.
         </p>
         <p> How might these response outcomes be quantified for our guess word scoring?
         </p>
         <p>
-            <strong>Information Entropy</strong> Let $R: \{x_1, x_2, ..., x_u\}$ be the set of all distinct response outcomes, where $u = 3^5 = 243$ (since a response outcome is composed of one of {$\text{Correct, Wrong, Absent}$} for five letters).
+            <strong>Information Entropy</strong> Let $R: \{x_1, x_2, ..., x_u\}$ be the set of all distinct response outcomes, where $u = 3^5 = 243$ (since a response outcome is composed of one of {$\text{Correct, Present, Absent}$} for five letters).
         </p>
         <p>
             Define $X_w$ to be a discrete random variable with respect to a guess word $w$ that has possible outcome $x_1, x_2, ..., x_r \in R$, and each outcome $x_j$ occurs with probability $p_w(x_j)$.
