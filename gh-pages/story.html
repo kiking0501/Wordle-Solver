@@ -23,7 +23,7 @@
             A natural thought is to figure out in early guesses which vowels ('a', 'e', 'i', 'o', 'u') exist in the target, since a word must contain at least one vowel.
         </p>
 
-        <p>More generally, one might consider words composed of common characters (including the vowels) over rare characters. The response for common characters would help eliminate more candidates for the next guess.
+        <p>More generally, one might consider words composed of common characters (including the vowels) over rare characters, since determining the existence of common characters provide more information for selecting the next guess.
         </p>
         <p> That leads to the first heuristic rule:
         </p>
@@ -47,14 +47,12 @@
         </p>
 
         <p>
-            <strong>Adjusted Heuristic Rule</strong>: Consider all possible guess words and give favour to words composed of significant characters by excluding characters already shared by all remaining candidates.
+            <strong>Adjusted Heuristic Rule</strong>: Consider all possible guess words. Give favour to words composed of "significant" characters by excluding characters already shared by all remaining candidates.
         </p>
 
         <p>
-            <strong>Scoring Function</strong>: Let $G$ be the set of all possible guess words. At the $i$-th guess, let $T_i$ be the set of remaining candidates. Let $f_{T_i}(c)$ be the frequency of a character $c$ among words from $T_i$, and $X_{i}$ be the set of characters that appear in every word from $T_i$.<br>
-            Then the score of a guess word with unique characters $c_1, c_2, ..., c_k$ could be taken as the sum
-            $$\sum_{j=0, c_j \notin X_{i}}^{k} f_{T_i}(c_j)$$
-            A guess word in $G$ with the highest score would be the next guess.
+            <strong>Scoring Function</strong>: On top of the previous scoring function, let $X_{i}$ be the set of characters that appear in every word from $T_i$. Then the score of a guess word with unique characters $c_1, c_2, ..., c_k$ could be adjusted as $\sum_{j=0, c_j \notin X_{i}}^{k} f_{T_i}(c_j)$.
+            A word with the highest score among all possible guess words would be the next guess.
         </p>
 
         <p style="padding-bottom:20px">
@@ -69,36 +67,43 @@
 
     <div class="details" id="entropyDetails" style="display:none">
         <p>
-            The discussed heuristic rule gives favour to words composed of significant characters, such that any response given towards the word could provide useful information for selecting the next guess.
+            <strong>Intuition</strong>: From the discussed heuristic rule, one might observe that a good guess word should have diversified response outcomes, where each response outcome is the feedback with respect to a potential target word.
         </p>
         <p>
-            Could we better formulate the "information" provided by these possible responses?
+            As an example, take three "-ound" words, "bound", "pound", and "mound" as the target candidates. If we choose the guess word as "lound", all possible responses would be the same outcome:
+            $$\text{Absent-Correct-Correct-Correct-Correct}$$
+            On the other hand, choosing a guess word "plumb" would result in three different response outcomes:
+            $$\text{Wrong-Wrong-Correct-Wrong-Correct}$$
+            $$\text{Correct-Wrong-Correct-Wrong-Wrong}$$
+            $$\text{Wrong-Wrong-Wrong-Correct-Wrong}$$
+            Clearly, the "plumb" is a good guess word since its diversified response outcomes help us better determine the actual target word.
+        </p>
+        <p> How might these response outcomes be quantified for our guess word scoring?
         </p>
         <p>
-            <strong>Formulation</strong>: Given a guess word, consider the set of $R$ possible responses $x_1, x_2, ..., x_R$ recieved by this word, where each response $x_j$ is a color code indicating how close the guess word is to a potential target word.
+            <strong>Information Entropy</strong> Let $R: \{x_1, x_2, ..., x_u\}$ be the set of all distinct response outcomes, where $u = 3^5 = 243$ (since a response outcome is composed of one of {$\text{Correct, Wrong, Absent}$} for five letters).
         </p>
-        <p>Then one might formulate the information of the responses as a response distribution $d$,  where $d(x_j)$ counts the number of responses $x_j$ the guess word receives over all possible target words.
+        <p>
+            Define $X_w$ to be a discrete random variable with respect to a guess word $w$ that has possible outcome $x_1, x_2, ..., x_r \in R$, and each outcome $x_j$ occurs with probability $p_w(x_j)$.
+
+            In information theory, we could measure the level of "information" of this random variable $X_w$ using the <a href="https://en.wikipedia.org/wiki/Entropy_(information_theory)" target="_blank"><strong>Shannon Entropy</strong></a>:
+
+            $$H(X_w) - \sum_{j=1}^{r} \ p_w(x_j) \ \log \ p_w(x_j) $$
+
+           where a higher entropy value indicates that $p_w(x_j)$ spreads out more evenly rather than being skewed.
+
+        </p>
+        <p>
+            <strong>Scoring Function</strong>  From the above formulation, we could see that the entropy of $X_w$ is, in fact, a good measurement of how diverse the response outcomes $x_1, x_2, ..., x_r$ are with respect to a guess word $w$. The score of $w$ could then simply be  the entropy of its associated random variable $X_w$. To compute $p_w(x_j)$, one might assume that the target word is selected uniformly and randomly. Then
+
+            $$p_w(x_j) = \frac{\text{Number of target candidates that }w\text{ results in }x_j}{\text{Total number of target candidates}} $$
+
+            The word with the maximum associated entropy among all possible guess words would be selected as the next guess.
         </p>
 
-        <p>
-            <strong>Intuition</strong>: The response distribution gives clues on how useful the information is provided by the guess word.
-        </p>
-        <p>For instance, a good guess word should have its response distribution spread out evenly, that is, the response outcomes are diversified rather than clustered. Otherwise, little information is provided for selecting the next guess when the response outcomes of a guess word are mostly identical.
-        </p>
-
-        <p>
-            <strong>Information Entropy</strong>: In information theory, this level of "information" of the response outcomes could be measured. Define a discrete random variable $X$ with $R$ response outcomes $x_1, x_2, ..., x_R$, where each response $x_j$ occurs with a probability $p(x_j) = \frac{d(x_j)}{R}$. Then the <a href="https://en.wikipedia.org/wiki/Entropy_(information_theory)" target="_blank"><strong>Shannon Entropy</strong></a> of $X$ is defined as:
-            $$ - \sum_{j=1}^{R} p(x_i) \log p(x_i) $$
-        </p>
-        <p>
-            The entropy value is higher when the response distribution is more even, thus gives a decent reflection of how useful the information from the possible responses is for selecting the next guess.
-        </p>
-        <p>
-            <strong>Implementation</strong>: At each guess time, simply computes the information entropy for all potential response outcomes from all guess words. The word with the maximum information entropy would be selected as the next guess word.
-        </p>
 
         <p style="padding-bottom:20px">
-            <strong>Result</strong>:  While the entropy computation takes much time, the solver can guess <a href="https://raw.githubusercontent.com/kiking0501/Wordle-Solver/master/data/small-ordered.txt" target="_blank"><strong>all 2315 words <i class="fa fa-external-link" aria-hidden="true" style="color:inherit"></i></strong></a> within <strong>five guesses</strong> using first guesses such as "react". And the average number of guesses is <strong>~3.6</strong>. Solves the Wordle daily challenges with an ease of mind.
+            <strong>Result</strong>:  While the entropy computation takes much time, the solver can guess <a href="https://raw.githubusercontent.com/kiking0501/Wordle-Solver/master/data/small-ordered.txt" target="_blank"><strong>all 2315 words <i class="fa fa-external-link" aria-hidden="true" style="color:inherit"></i></strong></a> within <strong>five guesses</strong> using first guesses such as "react". And the average number of guesses is <strong>~3.6</strong>. Solves the Wordle daily challenges with ease of mind.
             <i class="fa fa-coffee close-coffee" onclick="toggleSession('entropyDetails')"> </i>
         </p>
     </div>
