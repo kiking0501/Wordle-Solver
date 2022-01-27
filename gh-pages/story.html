@@ -5,7 +5,7 @@
     <div class="details" id="aboutDetails" style="display:none">
         <p> See below for the details of two solver strategies. Both strategies were implemented in Python with more updates <a href='http://github.com/kiking0501/Wordle-Solver' target="_blank"><strong>here</strong></a>.
         </p>
-        <p>
+        <p style="padding-bottom:20px">
         The solver currently displays the Heuristic strategy. <i class="fa fa-coffee close-coffee" onclick="toggleSession('aboutDetails')"> </i>
         </p>
 
@@ -31,31 +31,34 @@
             <strong>Heuristic Rule</strong>: Give favour to words composed of common characters rather than rare characters.
         </p>
         <p>
-            <strong>Implementation</strong>: Find character frequencies among the target candidates. A guess word then takes its score as the sum of character frequencies from its unique characters. The word with the highest score wins.
+            <strong>Scoring Function</strong>: Let ${f_T}(c)$ be the frequency count of a character $c$ among words from a target set $T$. Then the score of a guess word with unique characters $c_1, c_2, ..., c_k$ could be taken as the sum $\sum_{j=0}^{k} {f_T}(c_j)$. A guess word in $T$ with the highest score would be the next guess.
         </p>
         <p>
-            After the first guess, the same heuristic rule can be applied in subsequent guesses by only checking character frequencies among the remaining candidates.
+            After the first guess, the same heuristic rule can be applied in subsequent guesses by scoring with updated  character frequencies $f_{T_i}$, where $T_i$ is the set of remaining candidates at the $i$-th guess.
         </p>
         ~~~
         <p>
-            On the other hand, sometimes, one might want to guess words not listed in the remaining candidates. For example, consider words that end with "-ound". There are over eight of them (e.g. "bound", "pound", "mound", "sound", etc).
+            On the other hand, sometimes, one might wish to guess words not listed in the remaining candidates. For example, consider words that end with "-ound". There are over eight of them (e.g. "bound", "pound", "mound", "sound", etc).
         </p>
         <p>
-            If the remaining candidates only consist of these "-ound" words, a better guess word than those words could be e.g. "plumb", since the response of which helps quickly identify the significant character among those "-ound" words.
+            If the remaining candidates only consist of these "-ound" words, a better guess word could be e.g. "plumb" since it has more significant letters ('p', 'b', and 'm') of those "-ound" words.
         </p>
         <p> That leads to an adjusted heuristic rule:
         </p>
 
         <p>
-            <strong>Adjusted Heuristic Rule</strong>: Consider all possible guess words and give favour to words composed of significant characters only, excluding characters shared by all remaining candidates.
+            <strong>Adjusted Heuristic Rule</strong>: Consider all possible guess words and give favour to words composed of significant characters by excluding characters already shared by all remaining candidates.
         </p>
 
         <p>
-            <strong>Adjusted Implementation</strong>: Compute word scores for all possible guess words instead of just the remaining candidates, and ignore character frequencies from insignificant characters.
+            <strong>Scoring Function</strong>: Let $G$ be the set of all possible guess words. At the $i$-th guess, let $T_i$ be the set of remaining candidates. Let $f_{T_i}(c)$ be the frequency of a character $c$ among words from $T_i$, and $X_{i}$ be the set of characters that appear in every word from $T_i$.<br>
+            Then the score of a guess word with unique characters $c_1, c_2, ..., c_k$ could be taken as the sum
+            $$\sum_{j=0, c_j \notin X_{i}}^{k} f_{T_i}(c_j)$$
+            A guess word in $G$ with the highest score would be the next guess.
         </p>
 
-        <p>
-            <strong>Result</strong>: With the adjusted heuristic rule, the solver can guess <a href="https://raw.githubusercontent.com/kiking0501/Wordle-Solver/master/data/small-ordered.txt" target="_blank"><strong>all 2315 words <i class="fa fa-external-link" aria-hidden="true" style="color:inherit"></i></strong></a> within <strong>six guesses</strong> using first guesses such as "raise", "later", or "snare". Works like a charm to tackle the Wordle daily challenges. <i class="fa fa-coffee close-coffee" onclick="toggleSession('heuristicDetails')"></i>
+        <p style="padding-bottom:20px">
+            <strong>Result</strong>: With the adjusted heuristic rule, the solver can guess <a href="https://raw.githubusercontent.com/kiking0501/Wordle-Solver/master/data/small-ordered.txt" target="_blank"><strong>all 2315 words <i class="fa fa-external-link" aria-hidden="true" style="color:inherit"></i></strong></a> within <strong>six guesses</strong> using first guesses such as "raise", "later", or "snare". And the average number of guesses is <strong>~3.8</strong>. Works like a charm to tackle the Wordle daily challenges. <i class="fa fa-coffee close-coffee" onclick="toggleSession('heuristicDetails')"></i>
         </p>
 
     </div>
@@ -66,25 +69,36 @@
 
     <div class="details" id="entropyDetails" style="display:none">
         <p>
-            The discussed heuristic rule looks for words composed of significant characters such that the responses could provide useful <em><strong>information</strong></em> for the next guess. This criteria of "providing useful information for the next guess" could be further formulated as follows:
+            The discussed heuristic rule gives favour to words composed of significant characters, such that any response given towards the word could provide useful information for selecting the next guess.
         </p>
         <p>
-            <strong>Formulation</strong>: Given a guess word, consider all possible responses $x_1, x_2, ... x_n$ given to this word with respect to different targets. The amount of information from these possible responses could be measured by the <a href="https://en.wikipedia.org/wiki/Entropy_(information_theory)" target="_blank"><strong>Shannon Entropy</strong></a> in information theory:
-            $$ - \sum_{i=1}^{n} p(x_i) \log p(x_i) $$
-            where $p(x_i)$ is the probability of having $x_i$ as a response outcome.
+            Could we better formulate the "information" provided by these possible responses?
         </p>
         <p>
-            <strong>What it means</strong>: This entropy is higher when the response outcomes spread out more evenly in distribution, that is, when the responses are diversified rather than clustered with respect to various targets.
+            <strong>Formulation</strong>: Given a guess word, consider the set of $R$ possible responses $x_1, x_2, ..., x_R$ recieved by this word, where each response $x_j$ is a color code indicating how close the guess word is to a potential target word.
         </p>
-        <p>
-            Meanwhile, clustered responses are not desirable since little "information" is provided to distinguish different targets. As such, this entropy is a decent reflection of the amount of useful information provided by a guess word.
-        </p>
-        <p>
-            <strong>Implementation</strong>: At each guess time, compute the information entropy of all guess words with respect to the remaining candidates. The word with the maximum information entropy wins.
+        <p>Then one might formulate the information of the responses as a response distribution $d$,  where $d(x_j)$ counts the number of responses $x_j$ the guess word receives over all possible target words.
         </p>
 
         <p>
-            <strong>Result</strong>:  While the entropy computation takes much time, the solver can guess <a href="https://raw.githubusercontent.com/kiking0501/Wordle-Solver/master/data/small-ordered.txt" target="_blank"><strong>all 2315 words <i class="fa fa-external-link" aria-hidden="true" style="color:inherit"></i></strong></a> within <strong>five guesses</strong> using first guesses such as "react". Solves the Wordle daily challenges with an ease of mind.
+            <strong>Intuition</strong>: The response distribution gives clues on how useful the information is provided by the guess word.
+        </p>
+        <p>For instance, a good guess word should have its response distribution spread out evenly, that is, the response outcomes are diversified rather than clustered. Otherwise, little information is provided for selecting the next guess when the response outcomes of a guess word are mostly identical.
+        </p>
+
+        <p>
+            <strong>Information Entropy</strong>: In information theory, this level of "information" of the response outcomes could be measured. Define a discrete random variable $X$ with $R$ response outcomes $x_1, x_2, ..., x_R$, where each response $x_j$ occurs with a probability $p(x_j) = \frac{d(x_j)}{R}$. Then the <a href="https://en.wikipedia.org/wiki/Entropy_(information_theory)" target="_blank"><strong>Shannon Entropy</strong></a> of $X$ is defined as:
+            $$ - \sum_{j=1}^{R} p(x_i) \log p(x_i) $$
+        </p>
+        <p>
+            The entropy value is higher when the response distribution is more even, thus gives a decent reflection of how useful the information from the possible responses is for selecting the next guess.
+        </p>
+        <p>
+            <strong>Implementation</strong>: At each guess time, simply computes the information entropy for all potential response outcomes from all guess words. The word with the maximum information entropy would be selected as the next guess word.
+        </p>
+
+        <p style="padding-bottom:20px">
+            <strong>Result</strong>:  While the entropy computation takes much time, the solver can guess <a href="https://raw.githubusercontent.com/kiking0501/Wordle-Solver/master/data/small-ordered.txt" target="_blank"><strong>all 2315 words <i class="fa fa-external-link" aria-hidden="true" style="color:inherit"></i></strong></a> within <strong>five guesses</strong> using first guesses such as "react". And the average number of guesses is <strong>~3.6</strong>. Solves the Wordle daily challenges with an ease of mind.
             <i class="fa fa-coffee close-coffee" onclick="toggleSession('entropyDetails')"> </i>
         </p>
     </div>
@@ -106,7 +120,8 @@
         </p>
         ~~
 
-        <p>Finally, my strategy got a six and his strategy got a five for the worst number of guesses. However, mine runs much faster. That counts as my win, I would say. <i class="fa fa-coffee close-coffee" onclick="toggleSession('nightDetails')"></i>
+        <p style="padding-bottom:20px">
+            Finally, my strategy got a six and his strategy got a five for the worst number of guesses. However, mine runs much faster. That counts as my win, I would say. <i class="fa fa-coffee close-coffee" onclick="toggleSession('nightDetails')"></i>
         </p>
     </div>
 </div>
