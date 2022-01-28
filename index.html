@@ -64,6 +64,13 @@
                     autoOpen: false,
                     modal: true,
                 });
+
+                var url = window.location.href;
+                var suffix = url.substr(url.lastIndexOf('/') + 1);
+                console.log(suffix);
+                if (suffix === "?=how-it-works") {
+                   switchStory();
+                }
             })
         </script>
 
@@ -77,9 +84,10 @@
             </header>
             <div>
                 <div class="subtitle">
-                    <a href='http://github.com/kiking0501/Wordle-Solver' target="_blank">by kiking</a> <a href='http://github.com/kiking0501/Wordle-Solver' target="_blank"><img src="img/GitHub-Mark-32px.png" alt="Kiking's Github" style="height:1em;"></a>
-                    |
                     <span class="story-link" onclick="switchStory()">How it works</span> <span class="story-link" onclick="switchStory()"><i class="fa fa-coffee" style="color:inherit"></i></span>
+                    |
+                    <a href='http://github.com/kiking0501/Wordle-Solver' target="_blank">by kiking</a> <a href='http://github.com/kiking0501/Wordle-Solver' target="_blank"><img src="img/GitHub-Mark-32px.png" alt="Kiking's Github" style="height:1em;"></a>
+
                </div>
             </div>
 

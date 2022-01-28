@@ -2,9 +2,13 @@
 
 - To guess an unknown 5-letter English word in fewest attempts
 
-- Inspired by the Wordle game: https://www.powerlanguage.co.uk/wordle/
-
 - Play it online! https://kiking0501.github.io/Wordle-Solver
+
+- Read about how it works:
+
+   https://kiking0501.github.io/Wordle-Solver?=how-it-works
+  
+- Inspired by [Wordle](https://www.powerlanguage.co.uk/wordle/)
 
   <p float="center">
       <img src="img/home.png" width="400" />

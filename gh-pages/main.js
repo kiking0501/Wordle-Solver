@@ -9,11 +9,11 @@ function goHome(){
     $("#edit-previous").hide();
     $("#help").hide();
     $("#story").hide();
+    $("#action-container").show();
 
     readWords();
     readGuesses();
     drawInitialBoard(function(){
-        $("#action-container").show();
         $("#start-play").show();
     });
 
