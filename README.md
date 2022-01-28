@@ -6,7 +6,7 @@
 
 - Read about how it works:
 
-   https://kiking0501.github.io/Wordle-Solver?=how-it-works
+   https://kiking0501.github.io/Wordle-Solver/?=how-it-works
   
 - Inspired by [Wordle](https://www.powerlanguage.co.uk/wordle/)
 
